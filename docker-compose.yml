@@ -1,0 +1,41 @@
+version: '3'
+services:
+  book-library-ui:
+    container_name: ui
+    build: frontend
+    environment:
+      - REACT_APP_BOOK_LIBRARY_API_BASE_URL=http://localhost/api/api
+    ports:
+      - 3000:3000
+    depends_on:
+      - book-library-api
+  book-library-api:
+    container_name: api
+    build: backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://book-library-postgres:5432/books_library
+      - spring.datasource.username=postgres
+      - spring.datasource.password=Finki2019
+    ports:
+      - 8080:8080
+    depends_on:
+      - book-library-postgres
+  book-library-postgres:
+    container_name: postgres
+    image: postgres:15.2-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Finki2019
+      - POSTGRES_DB=books_library
+  book-library-nginx:
+    container_name: nginx
+    build: .
+    ports:
+      - 80:80
+      - 433:433
+    depends_on:
+      - book-library-ui
+      - book-library-api
