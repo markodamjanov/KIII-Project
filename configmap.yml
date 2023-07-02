@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: book-library-config
+data:
+  application.properties: |
+    # Database connection settings
+    spring.datasource.url=jdbc:postgresql://book-library-postgres:5432/books_library
+    spring.datasource.username=postgres
+    spring.datasource.password=Finki2019
+
+    # Logging configuration
+    logging.level.root=INFO
+    logging.level.com.example.myapp=DEBUG
